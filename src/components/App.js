@@ -1,13 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import {chunkArray, generateBgColorsClass, useDataApi} from "../features/helpers";
 import { useNavigate } from "react-router-dom";
-import { AUTH_PATH } from "../features/constants";
+import {AUTH_PATH } from "../features/constants";
 import {useEffect, useMemo, useRef, useState} from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Pagination from "./Pagination";
+import Course from "./Course";
 
 function App() {
     const navigate = useNavigate();
@@ -32,7 +31,8 @@ function App() {
         }
         return [];
     }, [data]);
-    const [activePage, setActivePage] = useState(1)
+
+    const [activePage, setActivePage] = useState(1);
 
     const token = localStorage.getItem("token");
 
@@ -50,30 +50,19 @@ function App() {
     }, [activePage]);
     if (isLoading) {
         return (
-            <Spinner animation="border" variant="light" size="sm"/>
+            <Spinner animation="border" variant="light" />
         )
     }
     return (
         <div className="m-4">
             <Row xs={1} md={2} className="g-4" ref={scrollBoxContent}>
                 {!!dataToRender.length && (
-                    dataToRender[activePage - 1].map((course, idx) => (
-                        <Col key={idx}>
-                            <Card>
-                                <Card.Header>
-                                    <span className="badge bg-primary">Lessons: {course.lessonsCount}</span>
-                                    <span className="mx-1 badge bg-info">Rating: {course.rating}</span>
-                                    <span className={`badge ${bgClasses.current[course.tags[0]]}`}>{course.tags[0]}</span>
-                                </Card.Header>
-                                <Card.Img variant="top" src={course.previewImageLink + "/cover.webp"} className="rounded-0"/>
-                                <Card.Body>
-                                    <Card.Title>{course.title}</Card.Title>
-                                    <Card.Text>
-                                        {course.description}
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+                    dataToRender[activePage - 1].map(course => (
+                        <Course
+                            key={course.id}
+                            data={course}
+                            badgeClass={bgClasses.current[course.tags[0]]}
+                        />
                     ))
                 )}
             </Row>

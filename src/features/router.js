@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
-import { AUTH_PATH, APP_PATH } from "./constants";
+import {AUTH_PATH, APP_PATH, COURSE_PATH} from "./constants";
 import App from "../components/App";
 import Auth from "../components/Auth";
+import CourseDetails from "../components/CourseDetails";
 
 export const router = createBrowserRouter([
 	{
@@ -18,5 +19,9 @@ export const router = createBrowserRouter([
 	{
 		path: APP_PATH,
 		element: <App />,
+	},
+	{
+		path: `${COURSE_PATH}/:courseId`,
+		element: <CourseDetails />,
 	},
 ]);
